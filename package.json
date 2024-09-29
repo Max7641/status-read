@@ -1,0 +1,136 @@
+{
+	"name": "status-read",
+	"displayName": "Status-Read",
+	"description": "状态栏摸鱼看小说",
+	"version": "0.0.1",
+	"engines": {
+		"vscode": "^1.93.0"
+	},
+	"categories": [
+		"Other"
+	],
+	"keywords": [
+		"摸鱼",
+		"txt",
+		"book",
+		"小说",
+		"thief-book"
+	],
+	"publisher": "m7641",
+	"icon": "images/icon.png",
+	"activationEvents": [],
+	"main": "./src/extension.js",
+	"contributes": {
+		"configuration": {
+			"title": "Status-Read",
+			"type": "object",
+			"properties": {
+				"statusRead.filePath": {
+					"type": "string",
+					"default": "",
+					"description": "utf-8格式文件绝对路径"
+				},
+				"statusRead.currLineNum": {
+					"type": "number",
+					"default": 1,
+					"description": "当前阅读的行号(支持跳转)"
+				},
+				"statusRead.displaySize": {
+					"type": "number",
+					"default": 40,
+					"description": "最大显示字数"
+				},
+				"statusRead.displayLineNum": {
+					"type": "boolean",
+					"default": true,
+					"description": "是否显示行号"
+				},
+				"statusRead.automatic": {
+					"type": "boolean",
+					"default": false,
+					"description": "是否自动翻页"
+				},
+				"statusRead.autoInterval": {
+					"type": "number",
+					"default": 1,
+					"description": "自动翻页间隔(单位秒)"
+				}
+			}
+		},
+		"commands": [
+			{
+				"command": "statusRead.bossHide",
+				"title": "statusRead.BossHide"
+			},
+			{
+				"command": "statusRead.getPreviousLine",
+				"title": "statusRead.PreviousLine"
+			},
+			{
+				"command": "statusRead.getNextLine",
+				"title": "statusRead.NextLine"
+			},
+			{
+				"command": "statusRead.reLoad",
+				"title": "statusRead.ReLoad"
+			},
+			{
+				"command": "statusRead.automatic",
+				"title": "statusRead.Automatic"
+			}
+		],
+		"keybindings": [
+			{
+				"command": "statusRead.getPreviousLine",
+				"key": "alt+1",
+				"mac": "cmd+1",
+				"when": "editorTextFocus"
+			},
+			{
+				"command": "statusRead.getNextLine",
+				"key": "alt+2",
+				"mac": "cmd+2",
+				"when": "editorTextFocus"
+			},
+			{
+				"command": "statusRead.bossHide",
+				"key": "alt+3",
+				"mac": "cmd+3",
+				"when": "editorTextFocus"
+			},
+			{
+				"command": "statusRead.automatic",
+				"key": "alt+4",
+				"mac": "cmd+4",
+				"when": "editorTextFocus"
+			},
+			{
+				"command": "statusRead.reLoad",
+				"key": "alt+5",
+				"mac": "cmd+5",
+				"when": "editorTextFocus"
+			}
+		]
+	},
+	"scripts": {
+		"lint": "eslint .",
+		"pretest": "npm run lint",
+		"test": "vscode-test"
+	},
+	"devDependencies": {
+		"@types/mocha": "^10.0.7",
+		"@types/node": "20.x",
+		"@types/vscode": "^1.93.0",
+		"@vscode/test-cli": "^0.0.10",
+		"@vscode/test-electron": "^2.4.1",
+		"eslint": "^9.9.1"
+	},
+	"dependencies": {
+		"@vscode/vsce": "^3.1.0"
+	},
+	"repository": {
+		"type": "git",
+		"url": "https://github.com/Max7641/status-read"
+	},
+	"homepage": "https://github.com/Max7641/status-read"
+}
