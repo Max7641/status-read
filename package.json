@@ -2,7 +2,7 @@
 	"name": "status-read",
 	"displayName": "Status-Read",
 	"description": "状态栏摸鱼看小说",
-	"version": "0.0.1",
+	"version": "0.0.2",
 	"engines": {
 		"vscode": "^1.93.0"
 	},
@@ -33,7 +33,7 @@
 				"statusRead.currLineNum": {
 					"type": "number",
 					"default": 1,
-					"description": "当前阅读的行号(支持跳转)"
+					"description": "当前阅读的行号"
 				},
 				"statusRead.displaySize": {
 					"type": "number",
@@ -44,11 +44,6 @@
 					"type": "boolean",
 					"default": true,
 					"description": "是否显示行号"
-				},
-				"statusRead.automatic": {
-					"type": "boolean",
-					"default": false,
-					"description": "是否自动翻页"
 				},
 				"statusRead.autoInterval": {
 					"type": "number",
@@ -77,6 +72,10 @@
 			{
 				"command": "statusRead.automatic",
 				"title": "statusRead.Automatic"
+			},
+			{
+				"command": "statusRead.jumpPage",
+				"title": "statusRead.JumpPage"
 			}
 		],
 		"keybindings": [
@@ -105,9 +104,15 @@
 				"when": "editorTextFocus"
 			},
 			{
-				"command": "statusRead.reLoad",
+				"command": "statusRead.jumpPage",
 				"key": "alt+5",
 				"mac": "cmd+5",
+				"when": "editorTextFocus"
+			},
+			{
+				"command": "statusRead.reLoad",
+				"key": "alt+6",
+				"mac": "cmd+6",
 				"when": "editorTextFocus"
 			}
 		]

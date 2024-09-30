@@ -1,4 +1,3 @@
-"use strict";
 const vscode_1 = require("vscode");
 const fs = require("fs");
 class Book {
@@ -12,6 +11,7 @@ class Book {
         this.autoInterval = 1;
         this.intervalId;
         this.displayLineNum = true;
+        this.isShow = true;
     }
     init() {
         console.log("init");
@@ -20,7 +20,6 @@ class Book {
             vscode_1.window.showWarningMessage("请填写TXT格式的小说文件路径");
             return false;
         }
-        this.automatic = vscode_1.workspace.getConfiguration().get('statusRead.automatic');
         this.autoInterval = vscode_1.workspace.getConfiguration().get('statusRead.autoInterval')*1000;
         this.displaySize = vscode_1.workspace.getConfiguration().get('statusRead.displaySize');
         this.displayLineNum = vscode_1.workspace.getConfiguration().get('statusRead.displayLineNum');
@@ -28,29 +27,36 @@ class Book {
             this.displaySize = 50;
         }
         this.currLineNum = vscode_1.workspace.getConfiguration().get('statusRead.currLineNum');
-        let data = fs.readFileSync(this.filePath, 'utf-8');
-        if (data.length === 0) {
+        let fileData = "";
+        try {
+            fileData = fs.readFileSync(this.filePath, 'utf-8');
+        } catch (error) {
+            vscode_1.window.showErrorMessage(error.toString());
+            return false;
+        }
+        if (fileData.length === 0) {
             vscode_1.window.showWarningMessage("文件不存在或无法读取");
             return false;
         }
         // this.bookContext = data.toString().replace(/\n/g, line_break).replace(/\r/g, " ").replace(/　　/g, " ").replace(/ /g, " ");
         this.lineList = [];
-        for(let line of data.toString().split("\n")){
+        for(let line of fileData.toString().split("\n")){
             line = line.trim();
             if(line.length > 0){
                 this.lineList.push(line);
             }
         }
+        this.stopTimer();
+        return true;
+    }
+    stopTimer(){
+        if (this.automatic){
+			this.automatic = false;
+		}
         if (this.intervalId){
             clearInterval(this.intervalId);
             this.intervalId = undefined;
         }
-        if(this.automatic){
-            this.intervalId = setInterval(()=>{
-                vscode_1.window.setStatusBarMessage(this.getNextLine());
-            }, this.autoInterval);
-        }
-        return true;
     }
     getPreviousLine() {
         console.log("getPreviousLine");
