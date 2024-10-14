@@ -83,6 +83,7 @@ function activate(context) {
 		// 弹书输入框，输入页码
         vscode_1.window.showInputBox({
             placeHolder: "请输入行数",
+			value: bookObj.currLineNum.toString(),
             validateInput: (text) => {
                 if (text === "") {
                     return "请输入行数";
