@@ -82,17 +82,11 @@ function activate(context) {
 		bookObj.stopTimer();
 		// 弹书输入框，输入页码
         vscode_1.window.showInputBox({
-            placeHolder: "请输入行数",
+            placeHolder: "请输入行数/检索关键字",
 			value: bookObj.currLineNum.toString(),
             validateInput: (text) => {
                 if (text === "") {
-                    return "请输入行数";
-                }
-                if (isNaN(Number(text))) {
-                    return "请输入数字";
-                }
-                if (Number(text) < 1 || Number(text) > bookObj.lineList.length) {
-                    return "请输入1到" + bookObj.lineList.length + "之间的数字";
+                    return "请输入行数/检索关键字";
                 }
             },
         })
@@ -100,10 +94,28 @@ function activate(context) {
             if (value === undefined) {
                 return;
             }
-            bookObj.currLineNum = Number(value);
-            bookObj.linePos = 0;
-            console.log("jumpPage: " + bookObj.currLineNum);
-            statusBarItem.text = bookObj.getNextLine();
+			if(isNaN(Number(value))){
+				// 非数字，遍历检索
+				for(let i = 0; i < bookObj.lineList.length; i++){
+					if(bookObj.lineList[i].indexOf(value) > -1){
+						bookObj.currLineNum = i + 1;
+						bookObj.linePos = 0;
+						statusBarItem.text = bookObj.getNextLine();
+						vscode_1.window.showInformationMessage("跳转到第"+ bookObj.currLineNum + "行");
+						return;
+					}
+				}
+				vscode_1.window.showInformationMessage("未检索到指定关键字");
+			}else{
+				if (Number(value) < 1 || Number(value) > bookObj.lineList.length) {
+					vscode_1.window.showInformationMessage("请输入1到" + bookObj.lineList.length + "之间的数字");
+                    return;
+                }
+				bookObj.currLineNum = Number(value);
+				bookObj.linePos = 0;
+				statusBarItem.text = bookObj.getNextLine();
+				vscode_1.window.showInformationMessage("跳转到第"+ bookObj.currLineNum + "行");
+			}
         });
     });
 
