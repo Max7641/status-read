@@ -63,6 +63,10 @@ function activate(context) {
     });
 	// 自动翻页
 	let automatic = vscode_1.commands.registerCommand('statusRead.automatic', () => {
+		// 避免在隐藏状态下开启自动翻页
+		if (!bookObj.isShow){
+			return;
+		}
         bookObj.automatic = !bookObj.automatic;
 		console.log(bookObj.automatic);
 		// 先停掉之前可能存在的定时任务
